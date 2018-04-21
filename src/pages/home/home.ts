@@ -14,7 +14,7 @@ import { Dataservice } from '../../providers/dataservice/dataservice';
   templateUrl: 'home.html'
 })
 
-export class HomePage {
+export class HomePage { 
   // search condition
   public search = {
     name: "Rio de Janeiro, Brazil",
@@ -30,6 +30,8 @@ export class HomePage {
   constructor(private storage: Storage, public navCtrl: NavController, public popoverCtrl: PopoverController,
     public navParams: NavParams, private dataService: Dataservice) {
     this.selectedItem = navParams.get('item');
+    
+
   }
   loadData(date) {
 
@@ -41,7 +43,7 @@ export class HomePage {
     this.barChartData["label"] = 'Series A'
     this.doughnutChartData = [];
     this.doughnutChartDataWeight = [];
-     
+
     this.dataService.getPostData(this.dataService.serviceurl + formattedDate, null).subscribe(data => {
       this.isshow = false;
       this.dataFromServer = data;
@@ -51,14 +53,14 @@ export class HomePage {
         this.barChartLabels.push(element.BranchName);
         this.doughnutChartData.push(element.BranchTotalAmount);
         this.doughnutChartDataWeight.push(element.BranchTotalWeight);
-        
+
         this.barChartData["data"].push(element.BranchTotalAmount);
       });
-    console.log('--->'+JSON.stringify(this.barChartData["data"]))
-    if(data["ResponseStatus"]["Status"]==='Failure'){
-      alert(data["ResponseStatus"]["StatusMessage"]);
-      //  this.navCtrl.setRoot(HomePage);
-    }
+      console.log('--->' + JSON.stringify(this.barChartData["data"]))
+      if (data["ResponseStatus"]["Status"] === 'Failure') {
+        alert(data["ResponseStatus"]["StatusMessage"]);
+        //  this.navCtrl.setRoot(HomePage);
+      }
     },
       (error => {
         this.handleError(error, "loadData()");
@@ -96,7 +98,7 @@ export class HomePage {
   // go to result page
   doSearch() {
     //this.navCtrl.push(TripsPage);
-    this.dataFromServer={ResponseStatus:{Status:''}};
+    this.dataFromServer = { ResponseStatus: { Status: '' } };
     this.loadData(this.search.date);
   }
 
@@ -148,7 +150,7 @@ export class HomePage {
   public doughnutChartLabels: string[] = [];
   public doughnutChartData: number[] = [];
   public doughnutChartDataWeight: number[] = [];
-  
+
   public doughnutChartType: string = 'doughnut';
 
 

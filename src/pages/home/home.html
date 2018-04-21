@@ -47,7 +47,7 @@
   <ion-item *ngIf="dataFromServer && dataFromServer.ResponseStatus.Status==='Success'">
     <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
     Total amount
-    <ion-badge item-end>{{dataFromServer['TotalSalesAMount']}}</ion-badge>
+    <ion-badge item-end>{{dataFromServer['TotalSalesAMount']}} / {{dataFromServer['TotalBillCount']}} (bills) </ion-badge>
   </ion-item>
   <ion-content *ngIf="dataFromServer && dataFromServer.ResponseStatus.Status==='Success'" style="height:200px">
     Branchwise Amount
@@ -61,7 +61,8 @@
   <ion-item *ngIf="dataFromServer && dataFromServer.ResponseStatus.Status==='Success'">
     <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
     Total Weight
-    <ion-badge item-end>{{dataFromServer['TotalWeightInGm']}}</ion-badge>
+    <ion-badge item-end>{{dataFromServer['TotalWeightInGm']}} / {{dataFromServer['TotalBillCount']}} (bills)
+    </ion-badge>
   </ion-item>
   <ion-content *ngIf="dataFromServer && dataFromServer.ResponseStatus.Status==='Success'" style="height:200px">
     Branchwise Weight
@@ -81,19 +82,20 @@
 
     <ion-card *ngFor="let item of branchesData" (click)="itemTapped($event, item)">
       <img src="assets/img/bg1.jpg" />
-      <div class="card-title"> {{item.BranchName}}</div>
+      <div class="card-title"> {{item.BranchName}} </div>
       <div class="card-subtitle">
         <ion-item *ngIf="dataFromServer">
           <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
           Amount
-          <ion-badge item-end>{{item.BranchTotalAmount}}</ion-badge>
+          <ion-badge item-end>{{item.BranchTotalAmount}} </ion-badge>
         </ion-item>
 
         <ion-item *ngIf="dataFromServer">
           <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
           Weight
-          <ion-badge item-end>{{item.BranchTotalWeight}}</ion-badge>
+          <ion-badge item-end>{{item.BranchTotalWeight}} / {{item.BranchBillCount}} (Bills) </ion-badge>
         </ion-item>
+        
       </div>
     </ion-card>
 
@@ -140,7 +142,7 @@
         <ion-item>
           <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
           Amount
-          <ion-badge item-end>{{item.NetAmount}}</ion-badge>
+          <ion-badge item-end>{{item.NetAmount}} </ion-badge>
         </ion-item>
         <ion-item>
           <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
@@ -155,7 +157,7 @@
         <ion-item>
           <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
           Weight
-          <ion-badge item-end>{{item.netWeightInKg}}</ion-badge>
+          <ion-badge item-end>{{item.netWeightInKg}} </ion-badge>
         </ion-item>
         <ion-item>
           <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
@@ -164,13 +166,20 @@
         </ion-item>
 
         <progress id="progressbar1" max="{{item.WeightTargetInGm}}" value="{{item.netWeightInKg}}"> </progress>
-    <div id="progressbarlabel1">{{(item.netWeightInKg/item.WeightTargetInGm)*100 | number : '1.2-2'}} %</div>
+        <div id="progressbarlabel1">{{(item.netWeightInKg/item.WeightTargetInGm)*100 | number : '1.2-2'}} %</div>
 
+        <ion-item>
+          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
+          Number Of Bills
+          <ion-badge item-end> {{item.RouteBillCount}}</ion-badge>
+        </ion-item>
         <ion-item>
           <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
           {{item.SalesmanDetails.EmpCode}}
           <ion-badge item-end> {{item.SalesmanDetails.EmpFirstName}}</ion-badge>
         </ion-item>
+
+
       </ion-card>
 
 
