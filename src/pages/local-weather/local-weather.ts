@@ -1,7 +1,12 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { WeatherProvider } from '../../services/weather';
+import { Component } from "@angular/core";
+import { NavController, PopoverController, NavParams } from "ionic-angular";
 import { Storage } from '@ionic/storage';
+
+import { NotificationsPage } from "../notifications/notifications";
+import { SettingsPage } from "../settings/settings";
+import { TripsPage } from "../trips/trips";
+import { SearchLocationPage } from "../search-location/search-location";
+import { Dataservice } from '../../providers/dataservice/dataservice';
 // import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -9,55 +14,49 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'local-weather.html'
 })
 export class LocalWeatherPage {
-  weather: any;
-  location: {
-    state: string,
-    city: string
+  
+  // search condition
+  public search = {
+    name: "Rio de Janeiro, Brazil",
+    date: new Date().toISOString()
+  }
+  selectedItem: any;
+  icons: string[];
+  dataFromServer: any;
+  branchesData: any;
+  items: any;
+  isshow = false;
+  //public navCtrl: NavController, public navParams: NavParams,private dataService: Dataservice
+  constructor(private storage: Storage, public navCtrl: NavController, public popoverCtrl: PopoverController,
+    public navParams: NavParams, private dataService: Dataservice) {
+    this.selectedItem = navParams.get('item');
+    
+
+  } 
+ 
+
+  // choose place
+  choosePlace(from) {
+    this.navCtrl.push(SearchLocationPage, from);
   }
 
-  public locationList: Array<any> = [
-    {city: 'Los Angeles', state: 'CA'},
-    {city: 'Miami', state: 'FL'},
-    {city: 'New York', state: 'NY'},
-    {city: 'Seattle', state: 'WA'}
-  ]
-
-  constructor(
-    public navCtrl: NavController,
-    private weatherProvider: WeatherProvider,
-    private storage: Storage) {
+  // to go account page
+  goToAccount() {
+    this.navCtrl.push(SettingsPage);
   }
 
-  ionViewWillEnter() {
-
-    this.storage.get('location').then((val) => {
-      if (val != null) {
-        this.location = JSON.parse(val);
-
-      } else {
-        this.location = {
-          state: 'NY',
-          city: 'New York'
-        }
-      }
-
-      this.getWeather(this.location)
-
-    });
-
-  }
-
-  public getWeather(location) {
-    if (typeof location === 'string') {
-      this.location = JSON.parse(location);
-      console.log(this.location);
-    } else {
-      this.location = location;
-    }
-
-    this.weatherProvider.getWeather(this.location.state, this.location.city).subscribe((weather: any) => {
-      this.weather = weather.current_observation;
+  presentNotifications(myEvent) {
+    console.log(myEvent);
+    let popover = this.popoverCtrl.create(NotificationsPage);
+    popover.present({
+      ev: myEvent
     });
   }
+ 
+ 
+
+
 
 }
+
+//

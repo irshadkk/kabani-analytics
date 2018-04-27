@@ -1,57 +1,108 @@
+<!-- -->
 <ion-header>
-    <ion-navbar color="primary">
-        <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-        </button>
-        <ion-title>Local Weather</ion-title>
-    </ion-navbar>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon> 
+    </button>
+    <ion-title>
+      <strong>KABANI</strong>
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button tappable (click)="presentNotifications($event)">
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+      <button ion-button tappable (click)="goToAccount()">
+        <ion-icon name="cog"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
-<ion-content padding class="common-bg">
-  <ion-card class="full-width" no-margin margin-bottom>
-    <ion-card-content no-padding>
 
-      <ion-item>
-        <ion-label class="text-1x bold">Select Local</ion-label>
-        <ion-select [(ngModel)]="location" (ionChange)="getWeather(location)">
-          <ion-option *ngFor="let location of locationList" [value]="location">{{ location.city }}</ion-option>
-        </ion-select>
-      </ion-item>
 
-    </ion-card-content>
-  </ion-card>
+<ion-content padding class="animated fadeIn common-bg card-background-page">
+  
 
-  <ion-grid class="card" padding *ngIf="weather">
-    <ion-row>
-        <ion-col width-50 offset-25>
-            <h2 class="location text-dark">{{weather.display_location.full}}</h2>
-            <div class="icon"><img src="{{weather.icon_url}}" alt="weather"></div>
-            <h3 class="desc">{{weather.weather}}</h3>
-            <h1 class="temp">{{weather.temp_c}}&deg;</h1>
-        </ion-col>
-    </ion-row>
-    <ion-row>
-        <ion-col width-100>
-            <ion-list>
+  <div *ngIf="selectedItem" padding>
+    ROUTES
 
-                <ion-item>
-                <strong>Temp:</strong> {{weather.temperature_string}}
-                </ion-item>
-                 <ion-item>
-                    <strong>Relative Humidity:</strong> {{weather.relative_humidity}}
-                </ion-item>
-                 <ion-item>
-                    <strong>Dewpoint:</strong> {{weather.dewpoint_string}}
-                </ion-item>
-                 <ion-item>
-                    <strong>Visibility:</strong> {{weather.visibility_km}}
-                </ion-item>
-                <ion-item>
-                    <strong>Heat Index:</strong> {{weather.heat_index_string}}
-                </ion-item>
 
-            </ion-list>
-        </ion-col>
-    </ion-row>
-  </ion-grid>
+
+    <ion-list *ngFor="let item of selectedItem.RouteDetails">
+
+      <ion-item-sliding>
+        <ion-item>
+          <div class="card-title">{{item.RouteName}} </div>
+
+        </ion-item>
+        <ion-item-options side="left">
+          <button ion-button color="primary">
+        <ion-icon name="text"></ion-icon>
+        Text
+      </button>
+          <a href="tel:{{item.SalesmanDetails.EmpMobileNumber}}" ion-button color="secondary">
+            <ion-icon name="call"></ion-icon>
+            Call
+          </a>
+        </ion-item-options>
+        <ion-item-options side="right">
+          <a href="https://api.whatsapp.com/send?phone=+91{{item.SalesmanDetails.EmpMobileNumber}}" ion-button color="primary">
+            <ion-icon name="text"></ion-icon>
+            Whatsapp
+          </a>
+        </ion-item-options>
+
+
+      </ion-item-sliding>
+      <!-- <a href="tel:{{item.SalesmanDetails.EmpSurName}}" ion-item *ngFor="let item of selectedItem.RouteDetails"> -->
+      <ion-card>
+
+
+
+        <ion-item>
+          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
+          Amount
+          <ion-badge item-end>{{item.NetAmount}} </ion-badge>
+        </ion-item>
+        <ion-item>
+          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
+          sales target
+          <ion-badge item-end>{{item.SalesTarget}}</ion-badge>
+        </ion-item>
+
+        <progress id="progressbar" max="{{item.SalesTarget}}" value="{{item.NetAmount}}"> </progress>
+        <div id="progressbarlabel">{{(item.NetAmount/item.SalesTarget)*100 | number : '1.2-2'}} %</div>
+
+
+        <ion-item>
+          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
+          Weight
+          <ion-badge item-end>{{item.netWeightInKg}} </ion-badge>
+        </ion-item>
+        <ion-item>
+          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
+          weight target
+          <ion-badge item-end>{{item.WeightTargetInGm}}</ion-badge>
+        </ion-item>
+
+        <progress id="progressbar1" max="{{item.WeightTargetInGm}}" value="{{item.netWeightInKg}}"> </progress>
+        <div id="progressbarlabel1">{{(item.netWeightInKg/item.WeightTargetInGm)*100 | number : '1.2-2'}} %</div>
+
+        <ion-item>
+          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
+          Number Of Bills
+          <ion-badge item-end> {{item.RouteBillCount}}</ion-badge>
+        </ion-item>
+        <ion-item>
+          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
+          {{item.SalesmanDetails.EmpCode}}
+          <ion-badge item-end> {{item.SalesmanDetails.EmpFirstName}}</ion-badge>
+        </ion-item>
+
+
+      </ion-card>
+
+
+    </ion-list>
+  </div>
 </ion-content>

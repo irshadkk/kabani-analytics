@@ -21,15 +21,11 @@
 
 
 <ion-content padding class="animated fadeIn common-bg card-background-page">
-
-  <ion-card no-margin margin-bottom class="full-width" *ngIf="!selectedItem">
-
-    <ion-item>
+ 
+<ion-item class="full-width" *ngIf="!selectedItem">
       <ion-icon name="md-calendar" color="primary" item-left></ion-icon>
       <ion-datetime class="no-pl" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="search.date"></ion-datetime>
     </ion-item>
-  </ion-card>
-
   <button ion-button icon-start block no-margin color="primary" class="round" tappable (click)="doSearch()" *ngIf="!selectedItem">
     <ion-icon name="search"></ion-icon> Load
   </button>
@@ -71,8 +67,9 @@
         [legend]="barChartLegend" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
     </div>
   </ion-content>
-  <ion-content padding class="spinnerCenter" *ngIf="isshow">
-    <ion-spinner name="crescent" class="spinner-calm"> Loading data</ion-spinner>
+  <ion-content padding  *ngIf="isshow" style="left:47%;top:40%;background-color:transparent">
+    <ion-spinner  name="bubbles" class="spinner-calm"  > Loading data</ion-spinner>
+    Please wait...
 
   </ion-content>
 
@@ -80,109 +77,35 @@
 
 
 
-    <ion-card *ngFor="let item of branchesData" (click)="itemTapped($event, item)">
-      <img src="assets/img/bg1.jpg" />
+    <ion-card *ngFor="let item of branchesData" (click)="itemTapped($event, item)" >
+      <!-- <img src="assets/img/bg1.jpg" /> -->
       <div class="card-title"> {{item.BranchName}} </div>
       <div class="card-subtitle">
         <ion-item *ngIf="dataFromServer">
           <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
-          Amount
-          <ion-badge item-end>{{item.BranchTotalAmount}} </ion-badge>
+          Amount/Target
+          <ion-badge item-end>{{item.BranchTotalAmount}}/{{item.BranchSalesTarget}} </ion-badge>
         </ion-item>
+        <progress id="progressbar" max="{{item.BranchSalesTarget}}" value="{{item.BranchTotalAmount}}"> </progress>
+        <div id="progressbarlabel">{{(item.BranchTotalAmount/item.BranchSalesTarget)*100 | number : '1.2-2'}} %</div>
+ 
 
         <ion-item *ngIf="dataFromServer">
           <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
-          Weight
-          <ion-badge item-end>{{item.BranchTotalWeight}} / {{item.BranchBillCount}} (Bills) </ion-badge>
+          Weight/Target
+          <ion-badge item-end>{{item.BranchTotalWeight}} / {{item.BranchWeightTarget}}</ion-badge>
+        </ion-item>
+        <progress id="progressbar" max="{{item.BranchWeightTarget}}" value="{{item.BranchTotalWeight}}"> </progress>
+        <div id="progressbarlabel">{{(item.BranchTotalWeight/item.BranchWeightTarget)*100 | number : '1.2-2'}} %</div>
+
+        <ion-item *ngIf="dataFromServer">
+          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
+         Bills
+          <ion-badge item-end>{{item.BranchBillCount}} </ion-badge>
         </ion-item>
         
       </div>
     </ion-card>
 
-  </ion-list>
-
-
-
-  <div *ngIf="selectedItem" padding>
-    ROUTES
-
-
-
-    <ion-list *ngFor="let item of selectedItem.RouteDetails">
-
-      <ion-item-sliding>
-        <ion-item>
-          <div class="card-title">{{item.RouteName}} </div>
-
-        </ion-item>
-        <ion-item-options side="left">
-          <button ion-button color="primary">
-        <ion-icon name="text"></ion-icon>
-        Text
-      </button>
-          <a href="tel:{{item.SalesmanDetails.EmpMobileNumber}}" ion-button color="secondary">
-            <ion-icon name="call"></ion-icon>
-            Call
-          </a>
-        </ion-item-options>
-        <ion-item-options side="right">
-          <a href="https://api.whatsapp.com/send?phone=+91{{item.SalesmanDetails.EmpMobileNumber}}" ion-button color="primary">
-            <ion-icon name="text"></ion-icon>
-            Whatsapp
-          </a>
-        </ion-item-options>
-
-
-      </ion-item-sliding>
-      <!-- <a href="tel:{{item.SalesmanDetails.EmpSurName}}" ion-item *ngFor="let item of selectedItem.RouteDetails"> -->
-      <ion-card>
-
-
-
-        <ion-item>
-          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
-          Amount
-          <ion-badge item-end>{{item.NetAmount}} </ion-badge>
-        </ion-item>
-        <ion-item>
-          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
-          sales target
-          <ion-badge item-end>{{item.SalesTarget}}</ion-badge>
-        </ion-item>
-
-        <progress id="progressbar" max="{{item.SalesTarget}}" value="{{item.NetAmount}}"> </progress>
-        <div id="progressbarlabel">{{(item.NetAmount/item.SalesTarget)*100 | number : '1.2-2'}} %</div>
-
-
-        <ion-item>
-          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
-          Weight
-          <ion-badge item-end>{{item.netWeightInKg}} </ion-badge>
-        </ion-item>
-        <ion-item>
-          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
-          weight target
-          <ion-badge item-end>{{item.WeightTargetInGm}}</ion-badge>
-        </ion-item>
-
-        <progress id="progressbar1" max="{{item.WeightTargetInGm}}" value="{{item.netWeightInKg}}"> </progress>
-        <div id="progressbarlabel1">{{(item.netWeightInKg/item.WeightTargetInGm)*100 | number : '1.2-2'}} %</div>
-
-        <ion-item>
-          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
-          Number Of Bills
-          <ion-badge item-end> {{item.RouteBillCount}}</ion-badge>
-        </ion-item>
-        <ion-item>
-          <!-- <ion-icon name="logo-twitter" item-start></ion-icon> -->
-          {{item.SalesmanDetails.EmpCode}}
-          <ion-badge item-end> {{item.SalesmanDetails.EmpFirstName}}</ion-badge>
-        </ion-item>
-
-
-      </ion-card>
-
-
-    </ion-list>
-  </div>
+  </ion-list> 
 </ion-content>

@@ -3,6 +3,8 @@ import { NavController, PopoverController, NavParams } from "ionic-angular";
 import { Storage } from '@ionic/storage';
 
 import { NotificationsPage } from "../notifications/notifications";
+import { LocalWeatherPage } from "../local-weather/local-weather";
+
 import { SettingsPage } from "../settings/settings";
 import { TripsPage } from "../trips/trips";
 import { SearchLocationPage } from "../search-location/search-location";
@@ -29,7 +31,7 @@ export class HomePage {
   //public navCtrl: NavController, public navParams: NavParams,private dataService: Dataservice
   constructor(private storage: Storage, public navCtrl: NavController, public popoverCtrl: PopoverController,
     public navParams: NavParams, private dataService: Dataservice) {
-    this.selectedItem = navParams.get('item');
+    this.doSearch();  
     
 
   }
@@ -77,7 +79,7 @@ export class HomePage {
   itemTapped(event, item) {
     // That's right, we're pushing to ourselves!
     console.log('item' + JSON.stringify(item))
-    this.navCtrl.push(HomePage, {
+    this.navCtrl.push(LocalWeatherPage, {
       item: item
     });
   }
